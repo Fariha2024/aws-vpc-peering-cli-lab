@@ -1,3 +1,10 @@
+
+# 🎯 Objective
+
+The objective of this lab is to gain hands-on experience with AWS networking by implementing VPC peering using the AWS CLI. This includes creating and configuring two custom VPCs, setting up subnets and Internet Gateways, managing route tables, and enabling communication between VPCs through a peering connection. The lab also emphasizes understanding routing requirements and performing proper post-lab resource cleanup to avoid unnecessary costs.
+
+
+
 # To create a custom VPC1
 ~ $ aws ec2 create-vpc --cidr-block 10.0.0.0/16
 {
@@ -55,13 +62,14 @@
         "MapPublicIpOnLaunch": false
     }
 }
-~ $ # aws ec2 create internet gateway
+ # aws ec2 create internet gateway
 ~ $ # to creat IGW
 ~ $ aws ec2 create-internet-gateway --tag-specifications resourceType Internet-gateway Tags key=Name, Value=ing1
 
 ![igw1 created](screenshots/igw1-created.png)
 
-~ $ # aws ec2 create internet gateway
+ # aws ec2 create internet gateway
+
 ~ $ --tag-specifications resourceType Internet-gateway Tags key=Name, Value=ing1
 -bash: --tag-specifications: command not found
 ~ $ aws ec2 create-internet-gateway \
@@ -79,7 +87,9 @@
         ]
     }
 }
-~ $ # To attach igw with my vpc 
+
+
+ # To attach igw with my vpc 
 ~ $ aws ec2 attach-internet-gateway \
 >   --internet-gateway-id igw-0309caba3f322850f \
 >   --vpc-id vpc-02fd2ebf8956df75e
@@ -305,7 +315,7 @@
 
 
 
-TASK BY SIR
+### TASK BY SIR
 
 # To create vpc2 in same region with tag specification
 ~ $ aws ec2 create-vpc \
@@ -383,6 +393,7 @@ TASK BY SIR
 
 
 # Steps to make VPC2 public
+
  ## Create an Internet Gateway (IGW) for VPC2
 ~ $ aws ec2 create-internet-gateway \
 >   --tag-specifications 'ResourceType=internet-gateway,Tags=[{Key=Name,Value=IGW2}]'
@@ -711,7 +722,8 @@ TASK BY SIR
 ![peering request initiated](screenshots/request-initiated.png)
 
 
-## !!! REMEMBER
+
+# !!! REMEMBER
 Yes — updating the route tables on both sides is required for the VPC peering to actually allow traffic between the VPCs. Creating a peering connection alone does not automatically route traffic.
 
 Here’s why:
@@ -795,7 +807,32 @@ Each VPC still needs a route in its route table that points to the other VPC’s
 
 
 
-## POST LAB CLEANUP (VERIFIED)
+# 📚 Learning Outcomes
+
+By completing this lab, you will be able to:
+
+. Understand the fundamentals of AWS VPC networking
+
+. Create and configure custom VPCs using AWS CLI
+
+. Design and implement subnets within a VPC
+
+. Set up and attach Internet Gateways (IGW)
+
+. Configure route tables for internet and inter-VPC communication
+
+. Establish VPC peering connections between two VPCs
+
+. Enable communication between VPCs by updating route tables
+
+. Verify connectivity and routing configurations
+
+. Perform structured post-lab cleanup to avoid unnecessary AWS charges
+
+
+
+
+# POST LAB CLEANUP (VERIFIED)
 
 ~ $ aws ec2 delete-vpc --vpc-id vpc-0529a37af1b8775b8  # VPC2
 ~ $ aws ec2 describe-vpcs --query "Vpcs[*].{VPC_ID:VpcId,Name:Tags[?Key=='Name']|[0].Value}" --output table
